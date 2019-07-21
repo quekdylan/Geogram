@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "562557265617",
+    "firebase_url": "https://geogram-uwu.firebaseio.com",
+    "project_id": "geogram-uwu",
+    "storage_bucket": "geogram-uwu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562557265617:android:78d0fb1da91f15a9",
+        "android_client_info": {
+          "package_name": "com.dylan.geogrammad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "562557265617-0vqqhojqokkfdjn0mcbj1jvffu82cgmi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dylan.geogrammad",
+            "certificate_hash": "d74aafd2f8699f0aeb08e46b4c711ea174ebbab5"
+          }
+        },
+        {
+          "client_id": "562557265617-glnn45109cba36mvtkt8k94sabvbco37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEMXQyZGa4VA5uiKrXQlRV4oeqV4_LMss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "562557265617-glnn45109cba36mvtkt8k94sabvbco37.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
