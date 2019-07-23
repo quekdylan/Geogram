@@ -42,8 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         usernameTxt = (EditText)findViewById(R.id.usernameTxt);
         passwordTxt = (EditText)findViewById(R.id.passwordTxt);
         spinner = (ProgressBar)findViewById(R.id.spinner);
+        spinner.setVisibility(View.GONE);
         session = new Session(getApplicationContext());
-
+        // Auto login if user has logged in before
         if(session.checkLogin() == true) {
             spinner.setVisibility(View.VISIBLE);
             isValidLogin (session.getusername(), session.getpassword());

@@ -1,7 +1,6 @@
 package com.dylan.geogrammad;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,7 +38,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         usernameTxt = (EditText)findViewById(R.id.usernameTxt);
         passwordTxt = (EditText)findViewById(R.id.passwordTxt);
         spinner = (ProgressBar)findViewById(R.id.spinner2);
-
+        spinner.setVisibility(View.GONE);
         cancelTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

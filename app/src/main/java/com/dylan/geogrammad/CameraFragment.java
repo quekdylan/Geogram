@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.camerakit.CameraKit;
 import com.camerakit.CameraKitView;
+import com.jpegkit.Jpeg;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,15 +36,19 @@ public class CameraFragment extends Fragment {
         shutter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("click" , "shutter");
                 cameraKitView.captureImage(new CameraKitView.ImageCallback() {
                     @Override
                     public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
-                        File savedPhoto = new File(Environment.getExternalStorageDirectory(), "photo.jpg");
+                        File savedPhoto = new File(getContext().getFilesDir(), "uploadPhoto.jpg");
                         try {
+                            Fragment photoPreview = new PhotoPreviewFragment();
+                            Bundle args = new Bundle();
                             FileOutputStream outputStream = new FileOutputStream(savedPhoto.getPath());
                             outputStream.write(capturedImage);
                             outputStream.close();
+                            args.putString("Image", savedPhoto.getAbsolutePath());
+                            photoPreview.setArguments(args);
+                            getFragmentManager().beginTransaction().replace(R.id.container, photoPreview).addToBackStack(null).commit();
                         } catch (java.io.IOException e) {
                             e.printStackTrace();
                         }
@@ -54,7 +60,6 @@ public class CameraFragment extends Fragment {
         cameraToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("click" , "cameratoggle");
                 cameraKitView.toggleFacing();
             }
         });
@@ -90,4 +95,5 @@ public class CameraFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         cameraKitView.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 }

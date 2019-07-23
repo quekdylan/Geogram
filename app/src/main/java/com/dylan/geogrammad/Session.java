@@ -31,6 +31,6 @@ public class Session {
     }
 
     public void logout (){
-        prefs.edit().clear();
+        prefs.edit().clear().commit();
     }
 }
