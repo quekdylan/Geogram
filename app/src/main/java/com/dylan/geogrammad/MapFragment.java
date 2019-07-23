@@ -1,6 +1,7 @@
 package com.dylan.geogrammad;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,20 +23,53 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-public class MapFragment extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+import java.lang.reflect.Array;
+import java.util.List;
+
+import static java.lang.System.in;
+
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private Button btn;
     private Marker marker;
 
+    public MapFragment() {
 
+    }
+
+    public void loadMap (final String username){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference().child("users").child(username).child("Images");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // iterate thru all images and get coords + image
+                //have fun
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getContext(), "Database error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        btn = view.findViewById(R.id.btn);
+        btn = view.findViewById(R.id.closeAllBtn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,11 +77,21 @@ public class MapFragment extends FragmentActivity implements OnMapReadyCallback,
             }
         });
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        if(getActivity()!=null) {
+            SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            if (mapFragment != null) {
+                mapFragment.getMapAsync(this);
+            }
+        }
     }
 
     /**
@@ -70,7 +114,7 @@ public class MapFragment extends FragmentActivity implements OnMapReadyCallback,
         mMap.moveCamera(CameraUpdateFactory.newLatLng(gir));
 
         // Setting a custom info window adapter for the google map
-        InfoWindowAdapter markerInfoWindowAdapter = new InfoWindowAdapter(getApplicationContext());
+        InfoWindowAdapter markerInfoWindowAdapter = new InfoWindowAdapter(getContext());
         googleMap.setInfoWindowAdapter(markerInfoWindowAdapter);
 
         // Adding and showing marker when the map is touched
@@ -88,7 +132,7 @@ public class MapFragment extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(this, "Gir Forest Clicked!!!!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Gir Forest Clicked!!!!", Toast.LENGTH_SHORT).show();
     }
 }
 
