@@ -14,8 +14,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,6 +30,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     EditText usernameTxt;
     EditText passwordTxt;
     private ProgressBar spinner;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 String password = passwordTxt.getText().toString();
                 if(isValidUsername(username) && isValidPassword(password)) {
                     spinner.setVisibility(View.VISIBLE);
-                    addUser(username, password);
+                    checkIfUserExists(username, password);
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Invalid Username/Password", Toast.LENGTH_LONG ).show();
@@ -83,18 +87,38 @@ public class CreateAccountActivity extends AppCompatActivity {
         return passwordMatcher.matches();
     }
 
+    //Check if user exists in firebase
+    public void checkIfUserExists (final String username, final String password) {
+        final DatabaseReference myRef = database.getReference().child("users").child(username);
+        final User user = new User(username, password);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+               if(!dataSnapshot.hasChild("username")){
+                    addUser(user);
+               }
+               else{
+                   Toast.makeText(getApplicationContext(),"User already exists", Toast.LENGTH_LONG ).show();
+                   spinner.setVisibility(View.GONE);
+               }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Database error", Toast.LENGTH_SHORT).show();
+                spinner.setVisibility(View.GONE);
+            }
+        });
+    }
     //Add user to firebase
-    public void addUser (final String username, final String password) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        User user = new User(username, password);
-        myRef.child("users").child(username).setValue(user)
+    public void addUser(User user){
+        final DatabaseReference myRef = database.getReference().child("users").child(user.username);
+        myRef.setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Intent intent = new Intent (getApplicationContext(),LoginActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(getApplicationContext(),"Successful. Please log in", Toast.LENGTH_SHORT ).show();
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Intent intent = new Intent (getApplicationContext(),LoginActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(),"Successful. Please log in", Toast.LENGTH_SHORT ).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

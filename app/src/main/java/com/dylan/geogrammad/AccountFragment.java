@@ -3,6 +3,8 @@ package com.dylan.geogrammad;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,18 @@ public class AccountFragment extends Fragment {
                 Toast.makeText(getContext(),"Logout successful", Toast.LENGTH_LONG ).show();
             }
         });
+        addMapFragment();
         return view;
+    }
+
+    public void addMapFragment() {
+        FragmentManager childFragMan = getChildFragmentManager();
+        FragmentTransaction childFragTrans = childFragMan.beginTransaction();
+        MapFragment map = new MapFragment();
+        map.loadMap(session.getusername());
+        childFragTrans.add(R.id.mapContainer, map);
+        childFragTrans.addToBackStack(null);
+        childFragTrans.commit();
+
     }
 }

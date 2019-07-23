@@ -6,29 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
     <TextView
-        android:id="@+id/weatherTxtView"
+        android:id="@+id/GeogramTxtView"
         android:layout_width="202dp"
         android:layout_height="63dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="Welcome"
-        android:textSize="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Geogram"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView" />
 
     <EditText
         android:id="@+id/usernameTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:background="@drawable/textbox_rounded_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherTxtView" />
+        app:layout_constraintTop_toBottomOf="@+id/GeogramTxtView" />
 
     <TextView
         android:id="@+id/usernameTxtView"
@@ -57,6 +72,7 @@
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="textPassword"
+        android:background="@drawable/textbox_rounded_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordTxtView" />
@@ -65,7 +81,8 @@
         android:id="@+id/loginBtn"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_rounded"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="@+id/passwordTxt"
         app:layout_constraintTop_toBottomOf="@+id/passwordTxt" />
@@ -85,13 +102,9 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/loginBtn"
+        app:layout_constraintEnd_toStartOf="@+id/loginBtn"
+        app:layout_constraintTop_toTopOf="@+id/loginBtn" />
 
 </android.support.constraint.ConstraintLayout>

@@ -89,6 +89,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:text="Create"
+        android:background="@drawable/button_rounded"
         app:layout_constraintEnd_toEndOf="@+id/passwordTxt"
         app:layout_constraintTop_toBottomOf="@+id/passwordTxt" />
 

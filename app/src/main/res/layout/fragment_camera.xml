@@ -17,9 +17,7 @@
         app:camera_flash="auto"
         app:camera_facing="back"
         app:camera_focus="continuous"
-        app:camera_permissions="camera" >
-
-    </com.camerakit.CameraKitView>
+        app:camera_permissions="camera" />
 
 
     <ImageButton
@@ -37,7 +35,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="64dp"
-        android:src="@drawable/ic_switch_camera_black_24dp"
+        android:src="@drawable/ic_switch_camera_black_48dp"
+        android:background="#00000000"
         app:layout_constraintBottom_toBottomOf="@+id/shutterBtn"
         app:layout_constraintStart_toEndOf="@+id/shutterBtn"
         app:layout_constraintTop_toTopOf="@+id/shutterBtn" />

@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class PhotoPreviewFragment extends Fragment {
     ImageView photoPreview;
     ImageButton closeBtn;
     ImageButton checkBtn;
+    EditText captionTxt;
     private SimpleLocation location;
     private Session session;
 
@@ -49,6 +51,7 @@ public class PhotoPreviewFragment extends Fragment {
         closeBtn = (ImageButton)view.findViewById(R.id.closeBtn);
         checkBtn = (ImageButton)view.findViewById(R.id.checkBtn);
         photoPreview = (ImageView)view.findViewById(R.id.imageView2);
+        captionTxt = (EditText) view.findViewById(R.id.captionTxt);
 
         location = new SimpleLocation(getContext());
         // if we can't access the location yet
@@ -77,8 +80,10 @@ public class PhotoPreviewFragment extends Fragment {
                 double longitude = location.getLongitude();
                 location.endUpdates();
 
+                String caption = captionTxt.getText().toString();
+
                 LatLng latLng = new LatLng(latitude, longitude);
-                ImageLocation imageLocation = new ImageLocation(imgPath, latLng);
+                ImageLocation imageLocation = new ImageLocation(imgPath, latLng, caption);
                 addImage(imageLocation);
             }
         });
@@ -103,7 +108,6 @@ public class PhotoPreviewFragment extends Fragment {
         StorageReference storageRef = storage.getReference().child(session.getusername()).child(uuid);
         UploadTask uploadTask = storageRef.putFile(file);
 
-        // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
