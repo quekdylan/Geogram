@@ -99,6 +99,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     imageLocation.Coords = new LatLng(
                             snapshot.child("Coords").child("latitude").getValue(float.class),
                             snapshot.child("Coords").child("longitude").getValue(float.class));
+                    images.add(imageLocation);
                 }
             }
             @Override
