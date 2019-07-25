@@ -12,6 +12,10 @@ public class ImageLocation {
         return imageLocation.Coords;
     }
 
+    public ImageLocation(){
+
+    }
+
     public ImageLocation(String image, LatLng coords, String caption){
         ImagePath = image;
         Coords = coords;

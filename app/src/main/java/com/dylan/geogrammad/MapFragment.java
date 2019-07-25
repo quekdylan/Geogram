@@ -6,17 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.dylan.geogrammad.InfoWindowAdapter;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -30,36 +29,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
+import java.util.LinkedList;
 import java.util.List;
 
-import static java.lang.System.in;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private Button btn;
     private Marker marker;
+    private List<ImageLocation> images = new LinkedList<>();
 
     public MapFragment() {
 
-    }
-
-    public void loadMap (final String username){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference().child("users").child(username).child("Images");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // iterate thru all images and get coords + image
-                //have fun
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getContext(), "Database error", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
@@ -76,7 +58,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 marker.hideInfoWindow();
             }
         });
-
         return view;
     }
 
@@ -86,7 +67,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         if(getActivity()!=null) {
-            SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                     .findFragmentById(R.id.map);
             if (mapFragment != null) {
                 mapFragment.getMapAsync(this);
@@ -104,31 +85,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
      * installed Google Play services and returned to the app.
      */
 
+    //Retrieve ImageLocations from firebase and store into images list
+    public void loadMap (final String username){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference().child("users").child(username).child("Images");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ImageLocation imageLocation = new ImageLocation();
+                    imageLocation.Caption = snapshot.child("Caption").getValue().toString();
+                    imageLocation.ImagePath = snapshot.child("ImagePath").getValue().toString();
+                    imageLocation.Coords = new LatLng(
+                            snapshot.child("Coords").child("latitude").getValue(float.class),
+                            snapshot.child("Coords").child("longitude").getValue(float.class));
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //Error
+            }
+        });
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng gir = new LatLng(21.169065, 70.596481);
-        mMap.addMarker(new MarkerOptions().position(gir));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(gir));
-
-        // Setting a custom info window adapter for the google map
-        InfoWindowAdapter markerInfoWindowAdapter = new InfoWindowAdapter(getContext());
-        googleMap.setInfoWindowAdapter(markerInfoWindowAdapter);
-
-        // Adding and showing marker when the map is touched
-
-        mMap.clear();
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(gir);
-        mMap.animateCamera(CameraUpdateFactory.newLatLng(gir));
-        marker = mMap.addMarker(markerOptions);
-        // marker.showInfoWindow();
-
-        googleMap.setOnInfoWindowClickListener(this);
-
+        // Add marker for each Imagelocation in images list
+        for (ImageLocation image : images){
+            mMap.addMarker(new MarkerOptions().position(image.Coords).title(image.Caption));
+            Log.e("Image", image.Caption);
+            Log.e("Image", image.Coords.toString());
+        }
     }
+
 
     @Override
     public void onInfoWindowClick(Marker marker) {
@@ -136,5 +126,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 }
 
+
+/////////////////////////////////////////////////////////////////////////////////////////
 
 

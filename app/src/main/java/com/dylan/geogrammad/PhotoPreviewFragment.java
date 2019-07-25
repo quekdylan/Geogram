@@ -119,7 +119,7 @@ public class PhotoPreviewFragment extends Fragment {
         //Upload record to firebase database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("users").child(session.getusername()).child("Images");
-        // Update image path to firebase image path
+            // Update image path to firebase image path
         imageLocation.ImagePath = session.getusername() + "/" + uuid;
         Map<String, Object> hopperUpdates = new HashMap<>();
         hopperUpdates.put(uuid, imageLocation);

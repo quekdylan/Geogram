@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -60,5 +59,4 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
-
 }
