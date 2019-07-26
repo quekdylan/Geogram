@@ -39,10 +39,9 @@ public class AccountFragment extends Fragment {
         FragmentManager childFragMan = getChildFragmentManager();
         FragmentTransaction childFragTrans = childFragMan.beginTransaction();
         MapFragment map = new MapFragment();
-        map.loadMap(session.getusername());
+        map.setUsername(session.getUsername());
         childFragTrans.add(R.id.mapContainer, map);
         childFragTrans.addToBackStack(null);
         childFragTrans.commit();
-
     }
 }

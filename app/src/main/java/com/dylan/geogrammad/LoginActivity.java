@@ -45,8 +45,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // Auto login if user has logged in before
         if(session.checkLogin()) {
-            spinner.setVisibility(View.VISIBLE);
-            isValidLogin (session.getusername(), session.getpassword());
+            Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(),"Welcome back, "+session.getUsername(), Toast.LENGTH_LONG ).show();
         }
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -88,10 +89,10 @@ public class LoginActivity extends AppCompatActivity {
                     User user = singleSnapshot.getValue(User.class);
                     if (user.username.equals(username) && user.password.equals(password)) {
                         session.logout();
-                        session.setuser(username,password);
+                        session.setUser(username,password);
                         Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(),"Welcome "+username, Toast.LENGTH_LONG ).show();
+                        Toast.makeText(getApplicationContext(),"Welcome back, "+username, Toast.LENGTH_LONG ).show();
                     }
                     else{
                         spinner.setVisibility(View.GONE);

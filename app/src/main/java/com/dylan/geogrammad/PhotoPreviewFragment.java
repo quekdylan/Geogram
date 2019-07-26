@@ -105,7 +105,7 @@ public class PhotoPreviewFragment extends Fragment {
         Uri file = Uri.fromFile(new File(imageLocation.ImagePath));
         FirebaseStorage storage = FirebaseStorage.getInstance();
         String uuid = UUID.randomUUID().toString();
-        StorageReference storageRef = storage.getReference().child(session.getusername()).child(uuid);
+        StorageReference storageRef = storage.getReference().child(session.getUsername()).child(uuid);
         UploadTask uploadTask = storageRef.putFile(file);
 
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -118,9 +118,9 @@ public class PhotoPreviewFragment extends Fragment {
 
         //Upload record to firebase database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("users").child(session.getusername()).child("Images");
+        DatabaseReference myRef = database.getReference().child("users").child(session.getUsername()).child("Images");
             // Update image path to firebase image path
-        imageLocation.ImagePath = session.getusername() + "/" + uuid;
+        imageLocation.ImagePath = session.getUsername() + "/" + uuid;
         Map<String, Object> hopperUpdates = new HashMap<>();
         hopperUpdates.put(uuid, imageLocation);
         myRef.updateChildren(hopperUpdates, new DatabaseReference.CompletionListener() {

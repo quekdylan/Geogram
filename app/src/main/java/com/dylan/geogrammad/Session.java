@@ -8,22 +8,17 @@ class Session {
     private SharedPreferences prefs;
 
     Session(Context context) {
-        // TODO Auto-generated constructor stub
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    void setuser(String username, String password) {
+    void setUser(String username, String password) {
         prefs.edit().putString("username", username).apply();
         prefs.edit().putString("password", password).apply();
         prefs.edit().putBoolean("isLoggedIn", true).apply();
     }
 
-    String getusername() {
+    String getUsername() {
         return(prefs.getString("username",null));
-    }
-
-    String getpassword() {
-        return(prefs.getString("password",null));
     }
 
     boolean checkLogin() {
