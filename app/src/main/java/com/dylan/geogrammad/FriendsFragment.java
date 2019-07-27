@@ -1,5 +1,6 @@
 package com.dylan.geogrammad;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +12,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -90,6 +93,8 @@ public class FriendsFragment extends Fragment {
                     {
                         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row,viewGroup,false);
                         FriendsViewHolder viewHolder = new FriendsViewHolder(view);
+
+
                         return viewHolder;
                     }
                 };
@@ -103,11 +108,12 @@ public class FriendsFragment extends Fragment {
     {
         TextView userName;
 
+
         public FriendsViewHolder(@NonNull View itemView) {
             super(itemView);
-
             userName = itemView.findViewById(R.id.teamfriend);
 
         }
     }
+
 }

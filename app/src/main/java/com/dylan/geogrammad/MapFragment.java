@@ -52,6 +52,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         name = (TextView)view.findViewById(R.id.mapUsername);
         name.setText(username + "'s Map");
 
+        Fragment fragment = new Fragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("hello", username);
+        fragment.setArguments(bundle);
+
         //Initialize map
         if(getActivity()!=null) {
             SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -77,7 +82,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                         snapshot.child("Coords").child("latitude").getValue(float.class),
                         snapshot.child("Coords").child("longitude").getValue(float.class));
                         //Add marker
-                        mMap.addMarker(new MarkerOptions().position(imageLocation.Coords).title(imageLocation.Caption));
+                        mMap.addMarker(new MarkerOptions().position(imageLocation.Coords)
+                                .title(imageLocation.Caption).snippet(username));
                         //InfoWindow
 
                     }
@@ -94,6 +100,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        // Setting a custom info window adapter for the google map
+        InfoWindowAdapter markerInfoWindowAdapter = new InfoWindowAdapter(getContext());
+        googleMap.setInfoWindowAdapter(markerInfoWindowAdapter);
+        googleMap.setOnInfoWindowClickListener(this);
+
     }
 
 
