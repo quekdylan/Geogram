@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.friendsNav:
-                        loadFragment(new MapFragment());
+                        loadFragment(new FriendsFragment());
                         return true;
                     case R.id.cameraNav:
                         loadFragment(new CameraFragment());
