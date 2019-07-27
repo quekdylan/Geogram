@@ -2,10 +2,8 @@ package com.dylan.geogrammad;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -42,12 +40,14 @@ public class LoginActivity extends AppCompatActivity {
         usernameTxt = (EditText)findViewById(R.id.usernameTxt);
         passwordTxt = (EditText)findViewById(R.id.passwordTxt);
         spinner = (ProgressBar)findViewById(R.id.spinner);
-        spinner.setVisibility(View.GONE);
         session = new Session(getApplicationContext());
+        spinner.setVisibility(View.GONE);
+
         // Auto login if user has logged in before
-        if(session.checkLogin() == true) {
-            spinner.setVisibility(View.VISIBLE);
-            isValidLogin (session.getusername(), session.getpassword());
+        if(session.checkLogin()) {
+            Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(),"Welcome back, "+session.getUsername(), Toast.LENGTH_LONG ).show();
         }
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +56,13 @@ public class LoginActivity extends AppCompatActivity {
                 spinner.setVisibility(View.VISIBLE);
                 String username = usernameTxt.getText().toString();
                 String password = passwordTxt.getText().toString();
-                isValidLogin(username, password);
+                if(!username.equals("") && !password.equals("")){
+                    isValidLogin(username, password);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Please enter username and password!", Toast.LENGTH_LONG ).show();
+                    spinner.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -75,7 +81,6 @@ public class LoginActivity extends AppCompatActivity {
     public void isValidLogin (final String username, final String password){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("users");
-        // Read from the database
         Query userQuery = myRef.orderByKey().equalTo(username);
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -84,10 +89,10 @@ public class LoginActivity extends AppCompatActivity {
                     User user = singleSnapshot.getValue(User.class);
                     if (user.username.equals(username) && user.password.equals(password)) {
                         session.logout();
-                        session.setuser(username,password);
+                        session.setUser(username,password);
                         Intent intent = new Intent (getApplicationContext(),MainActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(),"Welcome "+username, Toast.LENGTH_LONG ).show();
+                        Toast.makeText(getApplicationContext(),"Welcome back, "+username, Toast.LENGTH_LONG ).show();
                     }
                     else{
                         spinner.setVisibility(View.GONE);

@@ -7,15 +7,26 @@
     tools:context=".CreateAccountActivity">
 
     <TextView
-        android:id="@+id/weatherTxtView"
+        android:id="@+id/WelcomeTxtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:text="Create Account"
-        android:textSize="36dp"
+        android:text="Welcome!"
+        android:textSize="64dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/createAccountTxtView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="Get started below"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WelcomeTxtView" />
 
     <EditText
         android:id="@+id/usernameTxt"
@@ -24,11 +35,12 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/textbox_rounded_light"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/weatherTxtView" />
+        app:layout_constraintTop_toBottomOf="@+id/createAccountTxtView" />
 
     <TextView
         android:id="@+id/usernameTxtView"
@@ -64,6 +76,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/textbox_rounded_light"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +102,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:text="Create"
+        android:background="@drawable/button_rounded"
         app:layout_constraintEnd_toEndOf="@+id/passwordTxt"
         app:layout_constraintTop_toBottomOf="@+id/passwordTxt" />
 

@@ -12,9 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.camerakit.CameraKit;
 import com.camerakit.CameraKitView;
-import com.jpegkit.Jpeg;
 
 import java.io.File;
 import java.io.FileOutputStream;
