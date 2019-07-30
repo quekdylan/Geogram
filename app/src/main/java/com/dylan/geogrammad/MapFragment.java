@@ -49,6 +49,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+
         name = (TextView)view.findViewById(R.id.mapUsername);
         name.setText(username + "'s Map");
 

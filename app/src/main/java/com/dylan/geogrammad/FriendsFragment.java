@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,12 +19,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +37,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
 
@@ -65,6 +72,7 @@ public class FriendsFragment extends Fragment {
 
         myFriendsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
         //inflate layout for this fragment
         return myMainView;
     }
@@ -81,9 +89,11 @@ public class FriendsFragment extends Fragment {
         FirebaseRecyclerAdapter<User, FriendsViewHolder> adapter =
                 new FirebaseRecyclerAdapter<User, FriendsViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull FriendsViewHolder holder, int position, @NonNull User model)
+                    protected void onBindViewHolder(@NonNull final FriendsViewHolder holder, int position, @NonNull User model)
                     {
                         holder.userName.setText(model.getUsername());
+
+
 
                     }
 
@@ -95,6 +105,16 @@ public class FriendsFragment extends Fragment {
                         FriendsViewHolder viewHolder = new FriendsViewHolder(view);
 
 
+                        //on CLICK starts here. itemView links to "R.id.teamfriend" in row.xml
+                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                MapFragment map = new MapFragment();
+                                map.setUsername("thanks");
+                                loadFragment(map);
+                            }
+                        });
                         return viewHolder;
                     }
                 };
@@ -102,6 +122,7 @@ public class FriendsFragment extends Fragment {
         myFriendsList.setAdapter(adapter);
 
         adapter.startListening();
+
 
     }
     public static class FriendsViewHolder extends RecyclerView.ViewHolder
@@ -114,6 +135,13 @@ public class FriendsFragment extends Fragment {
             userName = itemView.findViewById(R.id.teamfriend);
 
         }
+    }
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        //mappContainer is the ID in fragment_map.xml
+        transaction.replace(R.id.mappContainer, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 }
