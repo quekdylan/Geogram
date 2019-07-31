@@ -31,11 +31,8 @@ public class AccountFragment extends Fragment {
                 Toast.makeText(getContext(),"Logout successful", Toast.LENGTH_LONG ).show();
             }
         });
-        addMapFragment();
-        return view;
-    }
 
-    public void addMapFragment() {
+        //Loads map fragment for user
         FragmentManager childFragMan = getChildFragmentManager();
         FragmentTransaction childFragTrans = childFragMan.beginTransaction();
         MapFragment map = new MapFragment();
@@ -43,5 +40,6 @@ public class AccountFragment extends Fragment {
         childFragTrans.add(R.id.mapContainer, map);
         childFragTrans.addToBackStack(null);
         childFragTrans.commit();
+        return view;
     }
 }

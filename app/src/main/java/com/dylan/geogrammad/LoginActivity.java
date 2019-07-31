@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Welcome back, "+session.getUsername(), Toast.LENGTH_LONG ).show();
         }
 
+        // Redirect to isValidLogin method if inputs are not empty
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    //Checks if user credentials matches firebase data
+    //Checks if user credentials are valid
     public void isValidLogin (final String username, final String password){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("users");
@@ -87,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     User user = singleSnapshot.getValue(User.class);
+                    //Valid
                     if (user.username.equals(username) && user.password.equals(password)) {
                         session.logout();
                         session.setUser(username,password);
@@ -94,12 +96,14 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(),"Welcome back, "+username, Toast.LENGTH_LONG ).show();
                     }
+                    //Invalid
                     else{
                         spinner.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(),"Invalid Credentials", Toast.LENGTH_LONG ).show();
                     }
                 }
             }
+            //Database error
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 spinner.setVisibility(View.GONE);

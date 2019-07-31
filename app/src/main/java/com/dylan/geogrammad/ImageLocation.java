@@ -7,11 +7,6 @@ public class ImageLocation {
     LatLng Coords;
     String Caption;
 
-
-    public LatLng getCoords(ImageLocation imageLocation){
-        return imageLocation.Coords;
-    }
-
     public ImageLocation(){
 
     }

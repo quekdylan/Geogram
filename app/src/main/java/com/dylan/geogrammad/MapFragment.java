@@ -1,20 +1,14 @@
 package com.dylan.geogrammad;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dylan.geogrammad.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -84,9 +78,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                         snapshot.child("Coords").child("longitude").getValue(float.class));
                         //Add marker
                         mMap.addMarker(new MarkerOptions().position(imageLocation.Coords)
-                                .title(imageLocation.Caption).snippet(username));
-                        //InfoWindow
-
+                                .title(imageLocation.Caption).snippet(imageLocation.ImagePath));
                     }
                 }
                 @Override
@@ -105,7 +97,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         InfoWindowAdapter markerInfoWindowAdapter = new InfoWindowAdapter(getContext());
         googleMap.setInfoWindowAdapter(markerInfoWindowAdapter);
         googleMap.setOnInfoWindowClickListener(this);
-
     }
 
 

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -54,17 +52,19 @@ public class PhotoPreviewFragment extends Fragment {
         captionTxt = (EditText) view.findViewById(R.id.captionTxt);
 
         location = new SimpleLocation(getContext());
-        // if we can't access the location yet
+        // if GPS is not enabled
         if (!location.hasLocationEnabled()) {
             Toast.makeText(getContext(),"Please enable GPS", Toast.LENGTH_LONG ).show();
             SimpleLocation.openSettings(getContext());
         }
         location.beginUpdates();
 
+        //retrieve photo to display
         final String imgPath = getArguments().getString("Image");
         Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
         photoPreview.setImageBitmap(bitmap);
 
+        // cancel
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,10 +72,12 @@ public class PhotoPreviewFragment extends Fragment {
             }
         });
 
+        // confirm
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                // get location and save ImageLocation object
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 location.endUpdates();
@@ -104,6 +106,7 @@ public class PhotoPreviewFragment extends Fragment {
         session = new Session(getContext());
         Uri file = Uri.fromFile(new File(imageLocation.ImagePath));
         FirebaseStorage storage = FirebaseStorage.getInstance();
+        //generate unique id for image
         String uuid = UUID.randomUUID().toString();
         StorageReference storageRef = storage.getReference().child(session.getUsername()).child(uuid);
         UploadTask uploadTask = storageRef.putFile(file);
@@ -119,7 +122,7 @@ public class PhotoPreviewFragment extends Fragment {
         //Upload record to firebase database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("users").child(session.getUsername()).child("Images");
-            // Update image path to firebase image path
+        // Update image path to firebase image path
         imageLocation.ImagePath = session.getUsername() + "/" + uuid;
         Map<String, Object> hopperUpdates = new HashMap<>();
         hopperUpdates.put(uuid, imageLocation);

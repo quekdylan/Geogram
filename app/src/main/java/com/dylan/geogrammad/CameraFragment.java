@@ -1,12 +1,7 @@
 package com.dylan.geogrammad;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +29,7 @@ public class CameraFragment extends Fragment {
         shutter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // capture image and pass it to photo preview fragment
                 cameraKitView.captureImage(new CameraKitView.ImageCallback() {
                     @Override
                     public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
@@ -54,6 +50,8 @@ public class CameraFragment extends Fragment {
                 });
             }
         });
+
+        // toggle camera facing
         cameraToggle = view.findViewById(R.id.cameraToggle);
         cameraToggle.setOnClickListener(new View.OnClickListener() {
             @Override
